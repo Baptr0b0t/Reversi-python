@@ -1,4 +1,4 @@
-from constants import Black, White, Black_view, White_view
+from constants import Black, White, Placeable, Black_view, White_view, Place_view
 
 
 # Fonction qui affiche le plateau
@@ -16,5 +16,7 @@ def affiche_pion(pion):
         return Black_view
     elif pion == White:
         return White_view
+    elif pion == Placeable:
+        return Place_view
     else:
         return " "

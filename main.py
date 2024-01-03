@@ -1,5 +1,6 @@
 from constants import Black,White, Empty
 from view import *
+from core import *
 
 
 # Fonction principale
@@ -13,7 +14,15 @@ def main():
     plateau[3][4] = White
     plateau[4][3] = White
 
+    
     affiche_plateau(plateau)
+    
+    affiche_plateau(CheckAllCase(plateau, White))
+    Addpion(plateau, White, 2,4)
+    affiche_plateau(plateau)
+    affiche_plateau(CheckAllCase(plateau, Black))
+
+    
 
 
 # Exécute la fonction principale
