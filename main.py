@@ -1,6 +1,11 @@
 from constants import Black,White, Empty
 from view import *
 from core import *
+
+import sys
+# Ajoute le chemin du dossier modules au chemin de recherche des modules
+sys.path.append("modules")
+
 import tkinter
 
 # Fonction principale
@@ -17,7 +22,18 @@ def main():
     
 
 class Reversi:
-    def __init__(self):
+    def __init__(self, mode_jeu=None):
+
+        if mode_jeu == 1:
+            self.mode_jeu = mode_jeu
+            print("mode 2joueurs")
+        elif mode_jeu == 2:
+            self.mode_jeu = mode_jeu
+            print("mode ordinateur")
+        else:
+            print("Le mode de jeu doit être spécifié.")
+            exit()
+
         #super().__init__()
         # Initialise la fenêtre du terminal
         self.root = tkinter.Tk()
@@ -28,11 +44,13 @@ class Reversi:
         # Empêche l'utilisateur de modifier la résolution
         self.root.resizable(False, False)
 
+
+        self.joueur=Black
+
         # Crée le plateau de jeu
         # Initialise le plateau de jeu par une matrice
         self.plateau = [[-1 for _ in range(8)] for _ in range(8)]
-        
-        self.joueur=Black
+
         # Place les pions au centre
         self.plateau[3][3] = Black
         self.plateau[4][4] = Black
@@ -109,6 +127,3 @@ class Reversi:
 
             
         
-
-if __name__ == "__main__":
-    main()
