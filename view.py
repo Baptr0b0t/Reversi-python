@@ -21,3 +21,13 @@ def affiche_pion(pion):
         return Place_view
     else:
         return " "
+
+
+# Fonction qui affiche un pion en ASCII
+def pion_style(pion):
+    if pion == Black:
+        return ("Black","White")
+    elif pion == White:
+        return ("White","Black")
+    else:
+        return ("Black","Gray")

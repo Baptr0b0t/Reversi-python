@@ -7,7 +7,9 @@ import sys
 sys.path.append("modules")
 
 import tkinter
-
+from tkinter import *
+from tkinter.ttk import *
+import time
 # Fonction principale
 def main():
 
@@ -33,6 +35,8 @@ class Reversi:
         else:
             print("Le mode de jeu doit être spécifié.")
             exit()
+
+
 
         #super().__init__()
         # Initialise la fenêtre du terminal
@@ -64,6 +68,7 @@ class Reversi:
         for i in range(8):
             for j in range(8):
                 _text = affiche_pion(self.plateau[i][j])
+                
                 self.boutons.append(tkinter.Button(self.root, text=_text, command= lambda arg1 = (i * 8 + j): self.click(arg1)))
                 # Définit la largeur et la hauteur des boutons
                 self.boutons[i * 8 + j].config(width=10, height=5)
@@ -71,13 +76,14 @@ class Reversi:
                 self.boutons[i * 8 + j].grid(row=i, column=j)
         
         print(self.plateau)
-        self.Refresh_placeable()
+        self.Refresh()
 
     def Refresh(self):
         for i in range(8):
             for j in range(8):
                 _text = affiche_pion(self.plateau[i][j])
-                self.boutons[(i * 8 + j)].config(text=_text)
+                _foreground, _background = pion_style(self.plateau[i][j])
+                self.boutons[(i * 8 + j)].config(text=_text, foreground=_foreground, background=_background)
         self.Refresh_placeable()
 
     def Refresh_placeable(self):
@@ -156,10 +162,23 @@ class Reversi:
 
             coord = ChoseAction(self.placeable_case)
             y, x = coord % 8, coord // 8
-            self.plateau[x][y] = self.joueur
-            self.Refresh()
+            
+            Can_be_place = Can_place(self.plateau, self.joueur, x, y)
+            
+            if Can_be_place[0] == True:
+                self.plateau[x][y] = self.joueur
+                for direction in Can_be_place[1]:
+                    print(direction)
+
+                    listpond = Capture_list(self.plateau, x, y, direction, self.joueur)
+                    
+                    print (listpond)
+                    self.Setpond(listpond, self.joueur)
+            else:
+                print("Error can't place")
             self.joueur=self.joueur^1
             self.UnlockAllButton()
+            self.Refresh()
             
         
         #Lock les boutons
