@@ -65,7 +65,7 @@ class Reversi:
         self.Refresh()
         for i in range(8):
             for j in range(8):
-                if Can_place(self.plateau, self.joueur, i, j)==True:
+                if True in Can_place(self.plateau, self.joueur, i, j):
                     self.boutons[(i * 8 + j)].config(text="+")
         
 
@@ -75,12 +75,38 @@ class Reversi:
         # Convertit les coordonnées en indices de tableau
         y, x = coord % 8, coord // 8
         print("click", x, y)
-        if Can_place(self.plateau, self.joueur, x, y)==True:
-            self.plateau[x][y] = self.joueur
+        Can_be_place = Can_place(self.plateau, self.joueur, x, y)
+        print(Can_be_place)
+        if Can_be_place[0] == True:
+
+            
             print("placed")
+
+            #self.plateau[x][y] = self.joueur
             #self.Refresh()
+            self.plateau[x][y] = self.joueur
+            for direction in Can_be_place[1]:
+                print(direction)
+
+                listpond = Capture_list(self.plateau, x, y, direction, self.joueur)
+                
+                print (listpond)
+                self.Setpond(listpond, self.joueur)
+                
+                    
+            affiche_plateau(self.plateau)
+
+
+            
+
             self.joueur=self.joueur^1
             self.Refresh_placeable()
+    
+    def Setpond(self, listpond, joueur):
+        for x,y in listpond:
+            print("Capturing", x, y)
+            self.plateau[x][y] = self.joueur
+
             
         
 
