@@ -1,7 +1,7 @@
 from constants import Black,White, Empty
 from view import *
 from core import *
-
+from computer import *
 import sys
 # Ajoute le chemin du dossier modules au chemin de recherche des modules
 sys.path.append("modules")
@@ -71,20 +71,31 @@ class Reversi:
                 self.boutons[i * 8 + j].grid(row=i, column=j)
         
         print(self.plateau)
-        #self.Refresh_placeable()
+        self.Refresh_placeable()
 
     def Refresh(self):
         for i in range(8):
             for j in range(8):
                 _text = affiche_pion(self.plateau[i][j])
                 self.boutons[(i * 8 + j)].config(text=_text)
+        self.Refresh_placeable()
 
     def Refresh_placeable(self):
-        self.Refresh()
+        #self.Refresh()
+        self.placeable_case = []
         for i in range(8):
             for j in range(8):
-                if True in Can_place(self.plateau, self.joueur, i, j):
+                Can_be_place = Can_place(self.plateau, self.joueur, i, j)
+                if Can_be_place[0] == True:
                     self.boutons[(i * 8 + j)].config(text="+")
+                    if(self.mode_jeu==2):
+                        Count=0
+                        for direction in Can_be_place[1]:
+                            Count= Count + Capture_count(self.plateau, i, j, direction, self.joueur)
+                        print("Count for", i,j ,"=",Count)
+                        self.placeable_case.append((i * 8 + j, Count))
+        print("placeable count", self.placeable_case)
+
         
 
     def click(self, coord):
@@ -117,13 +128,42 @@ class Reversi:
 
             
 
+            
             self.joueur=self.joueur^1
-            self.Refresh_placeable()
+            self.Refresh()
+            if self.mode_jeu == 2:
+                self.ComputerTurn()
+
     
     def Setpond(self, listpond, joueur):
         for x,y in listpond:
             print("Capturing", x, y)
             self.plateau[x][y] = self.joueur
 
+    def LockAllButton(self):
+        for i in range(8):
+            for j in range(8):
+                self.boutons[(i * 8 + j)].config(state=tkinter.DISABLED)
+
+    def UnlockAllButton(self):
+        for i in range(8):
+            for j in range(8):
+                self.boutons[(i * 8 + j)].config(state=tkinter.NORMAL)
+    
+    def ComputerTurn(self):
+        if self.joueur == 1:
+            self.LockAllButton()
+
+            coord = ChoseAction(self.placeable_case)
+            y, x = coord % 8, coord // 8
+            self.plateau[x][y] = self.joueur
+            self.Refresh()
+            self.joueur=self.joueur^1
+            self.UnlockAllButton()
             
+        
+        #Lock les boutons
+        #Faire une analyse du plateau
+        #prendre la meileur option
+        #Changer le joueur
         
