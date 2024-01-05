@@ -9,7 +9,6 @@ sys.path.append("modules")
 import tkinter
 from tkinter import *
 from tkinter.ttk import *
-import time
 # Fonction principale
 def main():
 
@@ -89,17 +88,21 @@ class Reversi:
     def Refresh_placeable(self):
         #self.Refresh()
         self.placeable_case = []
+        self.place=0
         for i in range(8):
             for j in range(8):
                 Can_be_place = Can_place(self.plateau, self.joueur, i, j)
                 if Can_be_place[0] == True:
                     self.boutons[(i * 8 + j)].config(text="+")
+                    self.place=self.place+1
                     if(self.mode_jeu==2):
                         Count=0
                         for direction in Can_be_place[1]:
                             Count= Count + Capture_count(self.plateau, i, j, direction, self.joueur)
                         print("Count for", i,j ,"=",Count)
                         self.placeable_case.append((i * 8 + j, Count))
+        if self.place==0:
+            self.GameOver()
         print("placeable count", self.placeable_case)
 
         
@@ -144,7 +147,7 @@ class Reversi:
     def Setpond(self, listpond, joueur):
         for x,y in listpond:
             print("Capturing", x, y)
-            self.plateau[x][y] = self.joueur
+            self.plateau[x][y] = joueur
 
     def LockAllButton(self):
         for i in range(8):
@@ -159,30 +162,51 @@ class Reversi:
     def ComputerTurn(self):
         if self.joueur == 1:
             self.LockAllButton()
-
-            coord = ChoseAction(self.placeable_case)
-            y, x = coord % 8, coord // 8
+            self.root.after(3000, self.ComputerAction)
             
-            Can_be_place = Can_place(self.plateau, self.joueur, x, y)
+    def ComputerAction(self):
+        coord = ChoseAction(self.placeable_case)
+        y, x = coord % 8, coord // 8
             
-            if Can_be_place[0] == True:
-                self.plateau[x][y] = self.joueur
-                for direction in Can_be_place[1]:
-                    print(direction)
+        Can_be_place = Can_place(self.plateau, self.joueur, x, y)
+            
+        if Can_be_place[0] == True:
+            self.plateau[x][y] = self.joueur
+            for direction in Can_be_place[1]:
+                print(direction)
 
-                    listpond = Capture_list(self.plateau, x, y, direction, self.joueur)
+                listpond = Capture_list(self.plateau, x, y, direction, self.joueur)
                     
-                    print (listpond)
-                    self.Setpond(listpond, self.joueur)
-            else:
-                print("Error can't place")
-            self.joueur=self.joueur^1
-            self.UnlockAllButton()
-            self.Refresh()
+                print (listpond)
+                self.Setpond(listpond, self.joueur)
+        else:
+            print("Error can't place")
+        self.joueur=self.joueur^1
+        self.UnlockAllButton()
+        self.Refresh()
+        
+    def GameOver(self):
+        print("GameOver")
+        self.LockAllButton()
+        Count_white=0
+        Count_black=0
+        Count_empty=0
+        for i in range(8):
+            for j in range(8):
+                if self.plateau[i][j] == White:
+                    Count_white = Count_white+1
+                elif self.plateau[i][j] == Black:
+                    Count_black = Count_black+1
+                else:
+                    Count_empty = Count_empty+1
+        print("White =",Count_white)
+        print("Black =",Count_black)
+        print("Empty =",Count_empty)
+        self.root.after(10000, exit)
+    
+
+
+
             
         
-        #Lock les boutons
-        #Faire une analyse du plateau
-        #prendre la meileur option
-        #Changer le joueur
         
