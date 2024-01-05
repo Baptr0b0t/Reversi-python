@@ -24,30 +24,29 @@ def main():
 
 class Reversi:
     def __init__(self, mode_jeu=None):
-
+        #
         if mode_jeu == 1:
             self.mode_jeu = mode_jeu
-            print("mode 2joueurs")
+            print("2 players mode set")
         elif mode_jeu == 2:
             self.mode_jeu = mode_jeu
-            print("mode ordinateur")
+            print("Computer mode set")
         else:
-            print("Le mode de jeu doit être spécifié.")
+            raise Exception("Gamemode need to be specified.")
             exit()
 
 
 
-        #super().__init__()
         # Initialise la fenêtre du terminal
         self.root = tkinter.Tk()
-        print("create windows")
+        print("creating windows")
         # Configure la résolution de la fenêtre
-        self.root.geometry("640x680")
+        self.root.geometry("560x600")
 
         # Empêche l'utilisateur de modifier la résolution
         self.root.resizable(False, False)
-
-
+        self.root.title("Reversi")
+        # Set le joueur actuel
         self.joueur=Black
 
         # Crée le plateau de jeu
@@ -60,7 +59,7 @@ class Reversi:
         self.plateau[3][4] = White
         self.plateau[4][3] = White
 
-        print("create button")
+        print("creating all button")
         #self.root.focus_set()
         # Crée les boutons du plateau
         self.boutons = []
@@ -70,14 +69,15 @@ class Reversi:
                 
                 self.boutons.append(tkinter.Button(self.root, text=_text, command= lambda arg1 = (i * 8 + j): self.click(arg1)))
                 # Définit la largeur et la hauteur des boutons
-                self.boutons[i * 8 + j].config(width=10, height=5)
+                self.boutons[i * 8 + j].config(width=8, height=4)
                 # Place les boutons sur le plateau
                 self.boutons[i * 8 + j].grid(row=i, column=j)
         
-        print(self.plateau)
+        #print(self.plateau)
         self.Refresh()
 
     def Refresh(self):
+        #Modifie tout les pions de l'interface pour correspondre au plateau
         for i in range(8):
             for j in range(8):
                 _text = affiche_pion(self.plateau[i][j])
@@ -86,7 +86,7 @@ class Reversi:
         self.Refresh_placeable()
 
     def Refresh_placeable(self):
-        #self.Refresh()
+        #Trouve les cases pouvant accueilir un pion
         self.placeable_case = []
         self.place=0
         for i in range(8):
@@ -108,27 +108,27 @@ class Reversi:
         
 
     def click(self, coord):
-        print(coord)
+        #print(coord)
         
         # Convertit les coordonnées en indices de tableau
         y, x = coord % 8, coord // 8
         print("click", x, y)
         Can_be_place = Can_place(self.plateau, self.joueur, x, y)
-        print(Can_be_place)
+        #print(Can_be_place)
         if Can_be_place[0] == True:
 
             
-            print("placed")
+            print("placed", x,y)
 
             #self.plateau[x][y] = self.joueur
             #self.Refresh()
             self.plateau[x][y] = self.joueur
             for direction in Can_be_place[1]:
-                print(direction)
+                #print(direction)
 
                 listpond = Capture_list(self.plateau, x, y, direction, self.joueur)
                 
-                print (listpond)
+                #print (listpond)
                 self.Setpond(listpond, self.joueur)
                 
                     
@@ -162,7 +162,7 @@ class Reversi:
     def ComputerTurn(self):
         if self.joueur == 1:
             self.LockAllButton()
-            self.root.after(3000, self.ComputerAction)
+            self.root.after(1500, self.ComputerAction)
             
     def ComputerAction(self):
         coord = ChoseAction(self.placeable_case)
@@ -173,14 +173,14 @@ class Reversi:
         if Can_be_place[0] == True:
             self.plateau[x][y] = self.joueur
             for direction in Can_be_place[1]:
-                print(direction)
+                #print(direction)
 
                 listpond = Capture_list(self.plateau, x, y, direction, self.joueur)
                     
-                print (listpond)
+                #print(listpond)
                 self.Setpond(listpond, self.joueur)
         else:
-            print("Error can't place")
+            raise Exception("Can't place")
         self.joueur=self.joueur^1
         self.UnlockAllButton()
         self.Refresh()
@@ -202,8 +202,44 @@ class Reversi:
         print("White =",Count_white)
         print("Black =",Count_black)
         print("Empty =",Count_empty)
-        self.root.after(10000, exit)
+        result = (Count_white, Count_black, Count_empty)
+        self.root.after(4000, self.ShowResult, result)
+        
     
+    def ShowResult(self, result_tupple):
+        self.root.quit()
+        Count_white = str(result_tupple[0])
+        Count_black = str(result_tupple[1])
+        Count_empty = str(result_tupple[2])
+
+
+        if(Count_white>Count_black):
+            winner="White"
+        elif(Count_white==Count_black):
+            winner="Draw"
+        elif(Count_white<Count_black):
+            winner="Black"
+
+        self.result = tkinter.Tk()
+        print("creating result windows")
+        # Configure la résolution de la fenêtre
+        self.result.geometry("300x200")
+
+        # Empêche l'utilisateur de modifier la résolution
+        self.result.resizable(False, False)
+        self.result.title("Reversi Result")
+        
+        # Créer des labels 
+        self.label_1 = tkinter.Label(self.result, text="Count_white : " + Count_white, background="white",
+            foreground="black").pack()
+        self.label_2 = tkinter.Label(self.result, text="Count_black : " + Count_black, background="black",
+            foreground="white").pack()
+        self.label_3 = tkinter.Label(self.result, text="Count_empty : " + Count_empty, background="gray",
+            foreground="black").pack()
+        self.label_4 = tkinter.Label(self.result, text="Winner : " + winner, foreground="gold", font=("Arial", 20)).pack()
+        
+        self.result.mainloop()
+        
 
 
 
