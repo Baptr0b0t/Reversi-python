@@ -14,9 +14,10 @@ White_view = "O"
 Place_view = "+"
 
 
+
+
 direction = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
 
 #Launcher
-
 font = ("Arial", 14, "bold")

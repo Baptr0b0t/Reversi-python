@@ -23,9 +23,16 @@ def Capture_list(plateau, x, y, direction, joueur):
         i=i+1
     print(capture_list)
     return capture_list
-
             
-
+def Capture_count(plateau, x, y, direction, joueur):
+    capture_count=0
+    dx=direction[0]
+    dy=direction[1]
+    i=1
+    while (0 <= x + dx * i < 8 and 0 <= y + dy * i < 8) and plateau[x + dx * i][y + dy * i] != joueur:
+        capture_count=capture_count+1
+        i=i+1
+    return capture_count
 
 # Fonction qui vérifie si un coup est possible
 def Can_place(plateau, joueur, x, y):
