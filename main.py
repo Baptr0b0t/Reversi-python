@@ -24,7 +24,7 @@ def main():
 
 class Reversi:
     def __init__(self, mode_jeu=None):
-        #
+        self.running=True
         if mode_jeu == 1:
             self.mode_jeu = mode_jeu
             print("2 players mode set")
@@ -165,18 +165,20 @@ class Reversi:
             self.root.after(1500, self.ComputerAction)
             
     def ComputerAction(self):
+        if(self.running==False):
+            return
         coord = ChoseAction(self.placeable_case)
         y, x = coord % 8, coord // 8
-            
+
         Can_be_place = Can_place(self.plateau, self.joueur, x, y)
-            
+                
         if Can_be_place[0] == True:
             self.plateau[x][y] = self.joueur
             for direction in Can_be_place[1]:
                 #print(direction)
 
                 listpond = Capture_list(self.plateau, x, y, direction, self.joueur)
-                    
+                        
                 #print(listpond)
                 self.Setpond(listpond, self.joueur)
         else:
@@ -188,6 +190,7 @@ class Reversi:
     def GameOver(self):
         print("GameOver")
         self.LockAllButton()
+        self.running=False
         Count_white=0
         Count_black=0
         Count_empty=0
@@ -207,7 +210,6 @@ class Reversi:
         
     
     def ShowResult(self, result_tupple):
-        self.root.quit()
         Count_white = str(result_tupple[0])
         Count_black = str(result_tupple[1])
         Count_empty = str(result_tupple[2])

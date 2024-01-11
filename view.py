@@ -26,8 +26,8 @@ def affiche_pion(pion):
 # Fonction qui affiche un pion en ASCII
 def pion_style(pion):
     if pion == Black:
-        return ("Black","White")
-    elif pion == White:
         return ("White","Black")
+    elif pion == White:
+        return ("Black","White")
     else:
         return ("Black","Gray")
