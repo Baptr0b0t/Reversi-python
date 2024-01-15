@@ -15,13 +15,13 @@ Ensure you have Python installed on your system.
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/Baptr0b0t/reversi-python.git
+git clone https://github.com/Baptr0b0t/Reversi-python.git
 ```
 
 Navigate to the project directory:
 
 ```bash
-cd reversi-python
+cd Reversi-python
 ```
 
 Run the game using the launcher script:
