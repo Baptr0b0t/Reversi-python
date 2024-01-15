@@ -44,4 +44,4 @@ Contributions are welcome! Open issues, suggest improvements, or create pull req
 
 ## License
 
-This Reversi game is open-source and distributed under the [MIT License](LICENSE).
+This Reversi game is open-source and distributed under the [MIT](https://github.com/Baptr0b0t/Reversi-python/blob/main/LICENSE) license.
