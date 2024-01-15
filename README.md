@@ -1,8 +1,9 @@
 
 # Python Reversi Game
 
-Welcome to the Python Reversi Game with a Tkinter graphical interface! This implementation allows you to enjoy the classic board game in a user-friendly environment.
+Welcome to the Python Reversi Game with a simple Tkinter graphical interface! This implementation allows you to enjoy the classic board game in a user-friendly environment.
 
+![Reversi Game](https://github.com/Baptr0b0t/Reversi-python/blob/main/Reversi-screenshot.png)
 ## Getting Started
 
 ### Prerequisites
