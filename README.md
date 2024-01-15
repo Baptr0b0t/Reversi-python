@@ -30,7 +30,7 @@ Run the game using the launcher script:
 python launcher.py
 ```
 
-Follow the on-screen instructions to make your moves.
+Play.
 
 ## Game Features
 
