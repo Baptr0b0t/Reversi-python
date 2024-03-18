@@ -1,5 +1,4 @@
 import random
-import time
 def ChoseAction(placeable_case):
     max_value=0
     best_coord_list=[]
