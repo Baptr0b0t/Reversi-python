@@ -10,8 +10,6 @@ import tkinter
 from tkinter import *
 from tkinter.ttk import *
 
-
-print("This code can't be executed directly ! Use main.py !")
     
 
 class Reversi:
